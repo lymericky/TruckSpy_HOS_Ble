@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_gray"
+    android:orientation="vertical"
+    tools:context="com.pt.devicemanager.HoursOfServiceActivity"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/primaryLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+    <RelativeLayout
+        android:id="@+id/driverRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@color/ash"
+        android:elevation="1dp"
+        android:padding="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/dutyStatus_IV"
+            android:layout_width="145dp"
+            android:layout_height="125dp"
+            android:contentDescription="@string/duty_status"
+            android:src="@drawable/active_duty_status" />
+
+        <LinearLayout
+            android:id="@+id/driverLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="25dp"
+            android:layout_toEndOf="@+id/dutyStatus_IV"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/driverId_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="1dp"
+                android:text="@string/john_doe"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/truckId_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="1dp"
+                android:text="@string/truck123"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/trailerId_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="1dp"
+                android:text="@string/trailerabc"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/countryFlag_IV"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/driverLinearLayout"
+            android:contentDescription="@string/country"
+            android:src="@drawable/american_flag" />
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/breakLinearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeLinearLayout">
+
+        <Button
+            android:id="@+id/startBreak_BTN"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:padding="12dp"
+            android:text="@string/start_break"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@+id/driverRelativeLayout"
+            app:layout_constraintTop_toBottomOf="@+id/timeLinearLayout" />
+
+        <Button
+            android:id="@+id/endBreak_BTN"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:padding="12dp"
+            android:text="@string/end_break"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/startBreak_BTN"
+            app:layout_constraintTop_toBottomOf="@+id/timeLinearLayout" />
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <RelativeLayout
+        android:id="@+id/timeRelativeLayout"
+        android:layout_width="325dp"
+        android:layout_height="96dp"
+        android:background="@color/light_green"
+        android:gravity="center_horizontal"
+
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/driverRelativeLayout"
+        app:layout_constraintStart_toStartOf="@+id/driverRelativeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/driverRelativeLayout">
+
+        <LinearLayout
+            android:id="@+id/runtimeLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginEnd="30dp">
+
+            <TextView
+                android:id="@+id/runtimeLabel_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/runtime_TV"
+                android:text="Running Time"
+                tools:ignore="TextContrastCheck" />
+
+            <Chronometer
+                android:id="@+id/runtime_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="14pt" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/timeRemainingLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_toEndOf="@+id/runtimeLinearLayout">
+
+            <TextView
+                android:id="@+id/timeRemainingLabel_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/timeRemaining_TV"
+                android:text="@string/time_remaining"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/timeRemaining_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14pt"
+                android:text="0.00"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tripLabel_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRIP"
+            android:layout_below="@+id/runtimeLinearLayout"/>
+        <TextView
+            android:id="@+id/trip_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:layout_below="@+id/timeRemainingLinearLayout"
+            android:layout_toEndOf="@+id/tripLabel_tv"
+            android:layout_marginHorizontal="20dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/buttonRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/driverRelativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="12dp"
+        android:layout_margin="10dp">
+
+
+        <Button
+            android:id="@+id/dataTransfer_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/data_transfer"
+            android:layout_marginHorizontal="5dp"/>
+
+        <Button
+            android:id="@+id/remark_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/remark"
+            android:layout_below="@+id/dataTransfer_BTN"
+            android:layout_marginHorizontal="5dp"/>
+
+        <Button
+            android:id="@+id/options_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:layout_below="@+id/remark_BTN"
+            android:layout_marginHorizontal="5dp"
+            android:text="@string/options" />
+
+        <Button
+            android:id="@+id/events_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:layout_below="@+id/options_BTN"
+            android:layout_marginHorizontal="5dp"
+            android:text="EVENTS"
+            />
+
+        <Button
+            android:id="@+id/logs_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/logs"
+            android:layout_toEndOf="@+id/dataTransfer_BTN"/>
+
+        <Button
+            android:id="@+id/roadsideInspection_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/roadside_inspection"
+            android:layout_below="@+id/logs_BTN"
+            android:layout_toEndOf="@+id/remark_BTN"/>
+
+        <Button
+            android:id="@+id/dvir_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/dvir"
+            android:layout_below="@+id/roadsideInspection_BTN"
+            android:layout_toEndOf="@+id/options_BTN"
+            />
+
+        <Button
+            android:id="@+id/vehicleError_BTN"
+            android:layout_width="175dp"
+            android:layout_height="65dp"
+            android:text="@string/vehicle_warning_log"
+            android:layout_below="@+id/dvir_BTN"
+            android:layout_toEndOf="@+id/options_BTN"
+            />
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/status_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STATUS"
+            android:textColor="@color/colorAlert"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="2dp"
+        android:backgroundTint="@color/black"
+        />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+

@@ -1,0 +1,94 @@
+//apply from: '../../apikey/api.properties'
+
+apply plugin: 'com.android.library'
+//apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.firebase.crashlytics' // -- will not sync gradle with crashlytics applied
+
+android {
+
+    compileSdkVersion 32
+
+    defaultConfig {
+
+        minSdkVersion 19
+        targetSdkVersion 32
+        // SDK MM.mm-pp,App MM.mm-pp
+        versionName "6.6.0/6.6"
+        versionCode 37
+        //buildConfigField('String', 'API_KEY', 'ETktZrCVlk7h9pMxiNkyn1XbxqHVq3JN4HCtZDsB')
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            jniDebuggable false
+
+        }
+        debug {
+            // Only use this flag on builds you don't proguard or upload to beta-by-crashlytics
+            //ext.alwaysUpdateBuildId = false
+        }
+    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // fragments
+    implementation "androidx.fragment:fragment:1.5.2"
+
+    // firebase
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.4.2')
+
+    // Declare the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-auth'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
+    // TODO: Upgrading this generating an error; color missing
+    implementation 'com.google.android.material:material:1.7.0-alpha03'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    implementation 'androidx.preference:preference:1.1.1' // **** Don't update this, the new version fails to build ****
+
+
+    //pt-sdk
+    implementation project(':pt-sdk-release')
+    implementation 'com.google.gms.google-services:com.google.gms.google-services.gradle.plugin:4.3.13'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    // Nordic
+    implementation 'no.nordicsemi.android.support.v18:scanner:1.6.0'
+    implementation 'no.nordicsemi.android:log:2.3.0'
+    implementation 'no.nordicsemi.android:ble-common:2.3.1'
+
+    implementation 'commons-net:commons-net:20030805.205232'
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    // USB
+    implementation 'com.github.mik3y:usb-serial-for-android:3.4.6'
+    // ------------------------------------------------------------
+
+
+
+    // canary
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
+    //releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    // Optional, if you use support library fragments:
+    //debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+
+
+}
+

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2015, Nordic Semiconductor
+  ~ All rights reserved.
+  ~
+  ~ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+  ~
+  ~ 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+  ~
+  ~ 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the
+  ~ documentation and/or other materials provided with the distribution.
+  ~
+  ~ 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this
+  ~ software without specific prior written permission.
+  ~
+  ~ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  ~ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  ~ HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  ~ LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  ~ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+  ~ USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  -->
+<resources>
+
+    <string name="john_doe">John Doe</string>
+    <string name="truck123">Truck123</string>
+    <string name="trailerabc">TrailerABC</string>
+    <string name="country">Country</string>
+    <string name="duty_status">Duty Status</string>
+    <string name="data_transfer">DATA TRANSFER</string>
+    <string name="remark">REMARK</string>
+    <string name="options">OPTIONS</string>
+    <string name="logs">LOGS</string>
+    <string name="roadside_inspection">ROADSIDE INSPECTION</string>
+    <string name="start_break">START BREAK</string>
+    <string name="dvir">DVIR</string>
+    <string name="time_remaining">Time Remaining</string>
+    <string name="_0_00">0:00</string>
+    <string name="vehicle_warning_log">VEHICLE WARNING LOG</string>
+    <string name="end_break">END BREAK</string>
+    <string name="scan_bt_le">SCAN BT-le</string>
+    <string name="bluetooth_not_supported">BT Not Supported</string>
+    <string name="app_name">TruckSpy HOS</string>
+    <string name="pt_name">Pacific Track</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="device">Device:</string>
+    <string name="no_device">&lt;Select a device&gt;</string>
+    <string name="select_device">Select a device</string>
+    <string name="status">Status</string>
+    <string name="llsWrite">LinkLossAlert</string>
+    <string name="iasWrite">ImmediateAlert</string>
+    <string name="scanning">Scanning for devices...</string>
+    <string name="no_ble_devices">No LE devices found.</string>
+    <string name="no_required_permission">Permission denied.</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Not connected</string>
+    <string name="ready">Ready</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="connect">Connect</string>
+    <string name="connecting">Cancel</string>
+    <string name="disconnecting">Cancel</string>
+    <string name="RadioButton1">Alert level high</string>
+    <string name="RadioButton2">Alert level mid</string>
+    <string name="RadioButton3">Stop alerting</string>
+    <string name="SystemId">SystemId</string>
+    <string name="ModelNumber">ModelNumber</string>
+    <string name="SerialNumber">SerialNumber</string>
+    <string name="FirmwareRevision">FirmwareRevision</string>
+    <string name="HardwareRevision">HardwareRevision</string>
+    <string name="SoftwareRevision">SoftwareRevision</string>
+    <string name="ManufactureName">ManufactureName</string>
+    <string name="RegCertDataList">RegCertDataList</string>
+    <string name="ManufactureId">    ManufactureId</string>
+    <string name="BatteryLevel">    Battery Level</string>
+    <string name="OrgId">    OrganizationId</string>
+    <string name="Txpower">    Txpower Level</string>
+    <string name="Noupdate">    No Update</string>
+    <string name="ReadTxPower">ReadTxPower</string>
+    <string name="high_alert">HIGH Alert triggered!</string>
+    <string name="low_alert">LOW Alert triggered!</string>
+    <string name="writeTxnoti">TxNoti</string>
+    <string name="readRssi">Read Rssi Value</string>
+    <string name="Readdummy">D Read</string>
+    <string name="removeBond">Remove Bond</string>
+    <string name="paired">paired</string>
+    <string name="popup_title">Quit TruckSpy HOS</string>
+    <string name="popup_message">Do you want to quit this Application?</string>
+    <string name="popup_yes">YES</string>
+    <string name="popup_no">NO</string>
+    <string name="ble_not_supported">Bluetooth Low Energy not supported</string>
+    <string name="scan">Scan</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_fup">Update Firmware</string>
+    <string name="action_chk_fup">Chk For Update</string>
+    <string name="action_sd">Run Diags</string>
+    <string name="action_fup_file">Select Firmware</string>
+    <string name="action_sv">System Vars</string>
+    <string name="action_demo_spn">Register Fuel Level SPN</string>
+    <string name="action_get_ctrl_fw">Controller Firmware</string>
+    <string name="action_get_ble_fw">BLE Firmware</string>
+
+    <string name="action_adv">Commands</string>
+    <string name="action_get_dtc">Get DTC</string>
+    <string name="action_clear_dtc">Clear DTC</string>
+
+    <string name="scanner_title">Select device:</string>
+    <string name="scanner_empty">No device found</string>
+    <string name="scanner_action_scan">Scan</string>
+    <string name="scanner_action_cancel">Cancel</string>
+    <string name="scanner_subtitle_bonded">BONDED DEVICES:</string>
+    <string name="scanner_subtitle_not_bonded">AVAILABLE DEVICES:</string>
+    <string name="scanner_permission_rationale">Since Android 6.0 Marshmallow system requires granting access to device\'s location in order to scan for Bluetooth Smart devices. Bluetooth beacons may be used to determine the phone\'s and user\'s location.</string>
+    <string name="not_available">n/a</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_dev_settings">Settings</string>
+    <string name="title_activity_sv_settings">Device Settings</string>
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_devmode">Dev mode</string>
+    <string name="pref_description_devmode">Enable/Disable Development mode</string>
+
+    <string name="pref_title_ver_override">Override Device Version</string>
+    <string name="pref_description_ver_override">Enable/Disable version Override</string>
+
+    <string name="pref_title_version_user">Device Version in xxxx,nn</string>
+
+
+    <string name="upgrade_in_progress">Upgrading ...</string>
+    <string name="upgrade_uptodate">Done</string>
+    <string name="perf_file">com.pt.devicemanager.perf</string>
+
+    <!--System variables -->
+    <string name="pref_description_sv_pe">Time(sec) between periodic events</string>
+    <string name="pref_title_sv_pe">PE</string>
+
+    <string name="pref_description_sv_be">Enable/Disable BLE events</string>
+    <string name="pref_title_sv_be">BE</string>
+
+    <string name="pref_description_sv_ue">Enable/Disable UART events</string>
+    <string name="pref_title_sv_ue">UE</string>
+
+    <!-- Privacy -->
+    <string name="privacy_policy"><a href="https://www.pacifictrack.com/privacy-policy/eldman">Privacy Policy</a></string>
+    <string name="privacy_notice">I have read and agree to the Privacy Policy.</string>
+    <string name="privacy_accept">Accept</string>
+
+    <string name="channel_connected_devices_title">Tracking in progress ...</string>
+    <string name="channel_update_title">Update in progress ...</string>
+    <string name="channel_connected_devices_description">Shows a notification when a tracker is connected in background.</string>
+    <string name="channel_update_description">Shows a notification when an update is being performed.</string>
+    <string name="title_activity_tracker_manager">TruckSpy HOS</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tracker_running">Tracker Running</string>
+    <string name="go">GO</string>
+    <string name="refresh_data">Refresh Data</string>
+    <string name="get_data">Get Data</string>
+    <string name="dash">---</string>
+    <string name="event_id_number">Event ID Number:</string>
+    <string name="date_time">Date/Time:</string>
+    <string name="lat_long">Lat/Long:</string>
+    <string name="heading">Heading:</string>
+    <string name="satellite_status">Satellite Status:</string>
+    <string name="odometer">Odometer:</string>
+    <string name="velocity">Velocity:</string>
+    <string name="engine_hours">Engine Hours:</string>
+    <string name="rpm">RPM:</string>
+    <string name="driver">Driver:</string>
+    <string name="vehicle">Vehicle:</string>
+    <string name="trailer">Trailer:</string>
+    <string name="event_count">Event Count:</string>
+    <string name="mac_address">MAC Address:</string>
+    <string name="tracker_model">Tracker Model:</string>
+    <string name="serial">Serial:</string>
+    <string name="version">Version:</string>
+    <string name="vin">VIN:</string>
+    <string name="sequence">Sequence:</string>
+    <string name="satellite">Satellite:</string>
+    <string name="fuel_level">Fuel Level</string>
+    <string name="speed">Speed:</string>
+    <string name="truckspy_hos">TruckSpy HOS</string>
+
+
+</resources>

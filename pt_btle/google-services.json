@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "311958970744",
+    "firebase_url": "https://eldman-1e4fe.firebaseio.com",
+    "project_id": "eldman-1e4fe",
+    "storage_bucket": "eldman-1e4fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:311958970744:android:029d34ecd1037bb7",
+        "android_client_info": {
+          "package_name": "com.pt.devicemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "311958970744-7b5vds8tpn5v0s8pn05g3fajdh66kcuh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO7_rltqe48dGXgVJXm8CouUXgw9mJXIw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

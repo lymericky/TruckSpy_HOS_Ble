@@ -1,0 +1,93 @@
+@startuml
+'Version 1.0, 01/11/20
+
+title Eldman in a USB setup
+autonumber
+
+actor user
+box "Activity" #lightblue
+participant baseActivity as "BleProfileServiceReadyActivity"
+participant activity as "TrackerManagerActivity"
+participant defaultFragment
+participant scannerFragment
+participant trackerViewFragment
+end box
+
+box "Service" #yellowgreen
+participant baseService as "BleProfileService"
+participant service as "TrackerService"
+end box
+
+participant sdk as "SDK"
+
+user --> baseActivity: onConnectClicked
+note right
+    User click on the 'Connect button'
+end note
+baseActivity -> baseActivity: showDeviceScanningDialog
+baseActivity -> baseActivity: show ScannerFragment
+baseActivity --> scannerFragment: show
+== Select a Device ==
+user --> scannerFragment: Select a Device
+scannerFragment -> scannerFragment: Broadcast selected device
+[--> baseActivity: onUsbDeviceSelected
+== Connect with a Device ==
+baseActivity --> service: startService
+baseService -> baseService: onCreate
+service -> service: initManager
+note left
+    Create instance of TrackerManager
+end note
+service -> sdk: new TrackerManager
+baseActivity --> service: bindService
+return {Binder}
+baseService -> baseService: onStartCommand
+note left
+    Bind of service is implicitly tied
+    to a device connection
+end note
+baseService -> sdk: usbConnect
+...
+sdk -> baseService: onSerialConnected
+baseService -> baseService: broadcast BROADCAST_CONNECTION_STATE (Connected)
+
+[--> activity: onDeviceConnected
+activity -> activity: show TrackerViewFragment
+activity --> trackerViewFragment: show
+service -> service: syncTracker
+note right
+    Fetch things App model needs to be in sync
+    with the Tracker e.g.
+    - Tracker Info
+    - System Variables
+    - Stored events
+    etc.
+end note
+...
+== Send a request e.g. Get Stored Events Count ==
+activity -> activity: new GetStoredEventsCount
+activity -> service: Binder: getTracker().sendRequest
+...
+service -> service: onResponse(GetStoredEventsCountResponse gsec)
+service -> service: Process response
+note right
+    update App model and/or broadcast
+end note
+== Disconnect ==
+...
+user --> trackerViewFragment:  Disconnect
+user --> baseActivity: onConnectClicked
+note right
+    State of the service, indicates, if a
+    connection is in place
+end note
+baseActivity -> baseService: Binder:disconnect
+sdk -> baseService: onSerialDisconnected
+baseService -> baseService: stopSelf
+baseService -> baseService: broadcast BROADCAST_CONNECTION_STATE (Disconnected)
+[--> activity: onDeviceDisconnected
+baseActivity -> baseActivity: onDeviceDisconnected
+baseActivity -> baseService: unbindService
+activity -> activity: show DefaultFragment
+activity --> defaultViewFragment: show
+@enduml
