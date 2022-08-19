@@ -36,7 +36,7 @@
     <string name="time_remaining">Time Remaining</string>
     <string name="_0_00">0:00</string>
     <string name="vehicle_warning_log">VEHICLE WARNING LOG</string>
-    <string name="end_break">END BREAK</string>
+    <string name="end_break">BEGIN TRIP / END BREAK</string>
     <string name="scan_bt_le">SCAN BT-le</string>
     <string name="bluetooth_not_supported">BT Not Supported</string>
     <string name="app_name">TruckSpy HOS</string>
