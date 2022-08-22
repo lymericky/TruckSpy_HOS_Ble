@@ -3,10 +3,18 @@ package com.pt.devicemanager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -19,15 +27,46 @@ import com.google.android.gms.common.internal.TelemetryData;
 import com.google.android.gms.common.internal.TelemetryLoggingClient;
 import com.google.android.gms.common.internal.TelemetryLoggingOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.pt.sdk.BaseRequest;
+import com.pt.sdk.BaseResponse;
+import com.pt.sdk.BleuManager;
+import com.pt.sdk.TSError;
+import com.pt.sdk.TelemetryEvent;
+import com.pt.sdk.TrackerManager;
+import com.pt.sdk.TrackerManagerCallbacks;
+import com.pt.sdk.VehicleDiagTroubleCode;
+import com.pt.sdk.request.GetStoredEventsCount;
+import com.pt.sdk.request.GetTrackerInfo;
+import com.pt.sdk.request.GetVehicleInfo;
+import com.pt.sdk.request.inbound.SPNEventRequest;
+import com.pt.sdk.request.inbound.StoredTelemetryEventRequest;
+import com.pt.sdk.request.inbound.TelemetryEventRequest;
+import com.pt.sdk.response.ClearDiagTroubleCodesResponse;
+import com.pt.sdk.response.ClearStoredEventsResponse;
+import com.pt.sdk.response.ConfigureSPNEventResponse;
+import com.pt.sdk.response.GetDiagTroubleCodesResponse;
+import com.pt.sdk.response.GetStoredEventsCountResponse;
+import com.pt.sdk.response.GetSystemVarResponse;
+import com.pt.sdk.response.GetTrackerInfoResponse;
+import com.pt.sdk.response.GetVehicleInfoResponse;
+import com.pt.sdk.response.RetrieveStoredEventsResponse;
+import com.pt.sdk.response.SetSystemVarResponse;
 import com.pt.ws.TrackerInfo;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.concurrent.TimeUnit;
 
-public class HoursOfServiceActivity extends AppCompatActivity implements View.OnClickListener, TrackerServiceListener, TelemetryLoggingClient {
+public class HoursOfServiceActivity extends AppCompatActivity implements View.OnClickListener, TrackerServiceListener,
+        TelemetryLoggingClient, TrackerManagerCallbacks {
 
+    BleProfileService bleProfileService;
     TrackerService trackerService;
+    private TrackerManager mTrackerManager;
+    private TelemetryEvent telemetryEvent;
+    private Handler mHandler = new Handler();
+    private TrackerService.TrackerBinder binder = null;
 
     private ImageView dutyStatus_IV, countryFlag_IV;
     private TextView driverId_TV, truckId_TV, trailerId_TV, status_tv, trip_tv, timeRemaining_TV;
@@ -39,9 +78,12 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
     private boolean mTimerRunning;
     private final long START_TIME_IN_MILLIS = 8;
     private long mTimeLeftInMillis = TimeUnit.HOURS.toMillis(START_TIME_IN_MILLIS);
-
+    double original_Odometer;
+    double trip_Odometer;
+    double trip = 0;
     private LinearLayoutCompat primaryLinearLayout;
     private long lastPause;
+
 
     public static String getDriverId() {
         return DRIVER_ID;
@@ -82,11 +124,133 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public HoursOfServiceActivity init(TrackerService.TrackerBinder binder){
+        AppModel.getInstance().mConnectTime = System.currentTimeMillis();
+        hosBinder = binder;
+        this.binder = binder;
+        return this;
+    }
+    final IntentFilter tmIf = new IntentFilter();
+    final IntentFilter trackerIf = new IntentFilter();
+    final IntentFilter tupIf = new IntentFilter();
+    final IntentFilter dtcIf = new IntentFilter();
+    final IntentFilter tviIf = new IntentFilter();
+    final IntentFilter seIf = new IntentFilter();
+    final IntentFilter spnIf = new IntentFilter();
+
+
+
+    BroadcastReceiver tmRefresh = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateTelemetryInfo();
+        }
+    };
+
+    private void updateTelemetryInfo() {
+
+        if(AppModel.getInstance().mLastEvent != null){
+            final TelemetryEvent te = AppModel.getInstance().mLastEvent;
+        }
+
+    }
+
+    BroadcastReceiver tiRefresh = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateTrackerInfo();
+        }
+    };
+
+    private void updateTrackerInfo() {
+        if(AppModel.getInstance().mTrackerInfo != null){
+            TrackerInfo ti = AppModel.getInstance().mTrackerInfo;
+        }
+        if(getBinder() != null){
+            GetTrackerInfo gti = new GetTrackerInfo();
+            getBinder().getTracker().sendRequest(gti, null, null);
+        }
+
+
+    }
+
+    BroadcastReceiver tupRefresh = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Integer action = intent.getIntExtra(TrackerService.EXTRA_RESP_ACTION_KEY, 0);
+
+            switch (action) {
+                case TrackerService.EXTRA_TRACKER_UPDATE_ACTION_UPDATED:
+                    Toast.makeText(HoursOfServiceActivity.this, "Tracker was successfully updated.", Toast.LENGTH_SHORT).show();
+                    break;
+                default: // FAILED
+            }
+        }
+    };
+
+    BroadcastReceiver dtcRefresh = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getStringExtra(TrackerService.EXTRA_RESP_ACTION_KEY);
+
+            if (action.equals("GET")) {
+                VehicleDiagTroubleCode dtc = AppModel.getInstance().mLastDTC;
+                StringBuilder sb = new StringBuilder();
+                sb.append("Malfunction Indicator:").append(dtc.mDtc.mil).append("\n")
+                        .append("Bus:").append(dtc.mDtc.busType.name()).append("\n");
+                if (dtc.mDtc.codes.size() != 0) {
+                    for (String code: dtc.mDtc.codes) {
+                        sb.append(code).append(",");
+                    }
+                    // remove the trailing comma
+                    int sz = sb.length();
+                    sb.deleteCharAt(sz-1);
+                } else {
+                    sb.append("No codes.");
+                }
+
+            } else if (action.equals("CLEAR")) {
+                Integer status = intent.getIntExtra(TrackerService.EXTRA_RESP_STATUS_KEY, 0);
+                if (status == 0) {
+                    Toast.makeText(context, "DTC cleared!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "DTC clear failed!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    };
+
+    BroadcastReceiver viRefresh = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateVehicleInfo();
+        }
+    };
+
+    private void updateVehicleInfo() {
+        GetVehicleInfo gvi = new GetVehicleInfo();
+        getBinder().getTracker().sendRequest(gvi, null, null);
+
+    }
+
+    void updateSE(){
+        if(AppModel.getInstance().mLastSECount == 0){
+            Log.i("HOS_EVENT_COUNT", "Last Stored Event Count was 0");
+        }
+    }
+    void getStoredEventCount(){
+        GetStoredEventsCount gsec = new GetStoredEventsCount();
+        if(getBinder() != null){
+            getBinder().getTracker().sendRequest(gsec, null, null);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hours_of_service);
+        init(hosBinder);
+        telemetryEvent = AppModel.getInstance().mLastSEvent;
 
         /*---------------------------------------------------- Initializing Interface Variables --------------------------------------*/
 
@@ -133,6 +297,7 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
         } else {
             status_tv.setText("Device not detected");
         }
+
 
     }
 
@@ -195,7 +360,7 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
         /*-- Switch to inactive duty status and deactivate driving timer NOTE: the vehicle must be stationary --*/
         Toast.makeText(this, "Switching to Off Duty Status", Toast.LENGTH_SHORT).show();
         runtime.stop();
-        runtime.setBase(0);
+        runtime.setBase(SystemClock.elapsedRealtime());
         stopTimer();
     }
 
@@ -240,8 +405,6 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
 
     }
 
-
-
     public void startTimer(){
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
             @Override
@@ -253,8 +416,8 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
                 long sec = (mTimeLeftInMillis / 1000) % 60;
                 timeRemaining_TV.setText(f.format(hour) + ":" + f.format(min) + ":" + f.format(sec));
                 double theDifference = Double.parseDouble(String.valueOf(TrackerService.DIFFERENCE));
-
-                trip_tv.setText(String.valueOf(theDifference));
+                DecimalFormat df = new DecimalFormat("0.00");
+                trip_tv.setText(String.valueOf(df.format(theDifference)));
             }
 
             @Override
@@ -286,5 +449,105 @@ public class HoursOfServiceActivity extends AppCompatActivity implements View.On
     @Override
     public ApiKey<TelemetryLoggingOptions> getApiKey() {
         return null;
+    }
+
+    @Override
+    public void onRequest(String s, TelemetryEventRequest telemetryEventRequest) {
+
+        trip = 0;
+        original_Odometer = TrackerService.getEngineOdometer();
+        trip_Odometer = Double.parseDouble(telemetryEventRequest.mTm.mOdometer);
+        trip = original_Odometer - trip_Odometer;
+        Log.i("HOS_REQUEST", String.valueOf(trip));
+    }
+
+    @Override
+    public void onRequest(String s, StoredTelemetryEventRequest storedTelemetryEventRequest) {
+
+    }
+
+    @Override
+    public void onRequest(String s, SPNEventRequest spnEventRequest) {
+
+    }
+
+    @Override
+    public void onResponse(String s, ClearDiagTroubleCodesResponse clearDiagTroubleCodesResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, ClearStoredEventsResponse clearStoredEventsResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, GetDiagTroubleCodesResponse getDiagTroubleCodesResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, GetStoredEventsCountResponse getStoredEventsCountResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, GetSystemVarResponse getSystemVarResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, GetTrackerInfoResponse getTrackerInfoResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, GetVehicleInfoResponse getVehicleInfoResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, RetrieveStoredEventsResponse retrieveStoredEventsResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, SetSystemVarResponse setSystemVarResponse) {
+
+    }
+
+    @Override
+    public void onResponse(String s, ConfigureSPNEventResponse configureSPNEventResponse) {
+
+    }
+
+    @Override
+    public void onFileUpdateStarted(String s, String s1) {
+
+    }
+
+    @Override
+    public void onFileUpdateCompleted(String s) {
+
+    }
+
+    @Override
+    public void onFileUpdateFailed(String s, TSError tsError) {
+
+    }
+
+    @Override
+    public void onFileUpdateProgress(String s, int i) {
+
+    }
+
+    @Override
+    public void onFwUptodate(String s) {
+
+    }
+
+    @Override
+    public void onFwUpdated(String s, TrackerInfo trackerInfo) {
+
     }
 }

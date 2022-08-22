@@ -51,12 +51,11 @@ import com.pt.ws.VehicleInfo;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EventListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+/* This is the details view for the last stored event. It still requires re-organization and a
+* method to scroll through recorded events */
 public class EventListFragment extends Fragment implements TrackerServiceListener, TrackerManagerCallbacks {
+
+
 
     TrackerService trackerService;
     public static String VEH_INFO_TAG = "VEHICLE_INFO";

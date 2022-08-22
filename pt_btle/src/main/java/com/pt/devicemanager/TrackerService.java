@@ -158,14 +158,11 @@ public class TrackerService extends BleProfileService implements TrackerManagerC
 	}
 
 	public static double START_TIME;
-
-
-
 	public static double DIFFERENCE;
+	// trip = toHours * currentSpeed, then subtract trip from currentOdometer for DIFFERENCE
 
-	long startTime;
-	long toMinutes;
-	long toHours;
+	long startTime; // used to calculate trip
+	long toHours; // used to calculate trip
 
 
 	/** A broadcast message with this action and the message in {@link Intent#EXTRA_TEXT} will be sent t the UART device. */
@@ -313,21 +310,6 @@ public class TrackerService extends BleProfileService implements TrackerManagerC
 		Log.i("TRIP_ODOMETER", String.valueOf(getEngineTripOdometer()));
 	}
 
-	/*public void startTimer(){
-		timerTask = new TimerTask() {
-			@Override
-			public void run() {
-				COUNTER++;
-				Log.i("TIMER", String.valueOf(COUNTER));
-				setCOUNTER(COUNTER);
-			}
-		};
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(timerTask, 0, 1000);
-	}*/
-
-
-
 	@Override
 	protected void onRebind() {
 		stopForegroundService();
@@ -465,10 +447,7 @@ public class TrackerService extends BleProfileService implements TrackerManagerC
 
 		if(tmr.mTm.mEvent.toString().equals(EventParam.EV_TRIP_END.toString())){
 			Log.i("TRIP_LOG", "***************** Trip Ended!!!***************************----------------------------------------" + "Engine Hours : " + engineHours + " Time : " + getStartTime());
-			/*if(timerTask != null){
-				timerTask.cancel();
-				COUNTER = 0;
-			}*/
+
 		}
 
 		Log.i(TAG, "NEW EVENT:" + tmr.mTm.mEvent.toString() + ":" + tmr.mTm.mSeq);			// ***** THIS DISPLAYS EACH EVENT IN THE LOGCAT BY EVENT ID AND SEQUENCE NUMBER ******

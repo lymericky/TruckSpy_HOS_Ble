@@ -10,6 +10,8 @@
  */
 package com.pt.devicemanager;
 
+import static com.pt.devicemanager.TrackerManagerActivity.API_KEY;
+
 import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -29,6 +31,11 @@ public class App extends Application {
     public static final String UPDATE_CHANNEL = "update_channel";
 
     AppModel mModel;
+    String API_KEY = "ETktZrCVlk7h9pMxiNkyn1XbxqHVq3JN4HCtZDsB";
+    public Sdk setApiKey(String API_KEY){
+        this.API_KEY = API_KEY;
+        return Sdk.getInstance().setApiKey(API_KEY);
+    }
 
     @Override
         public void onCreate()
@@ -45,8 +52,7 @@ public class App extends Application {
         Sdk.getInstance().setLogger(new DefaultLogger());
         Sdk.getInstance().initialize(this);
         // Note: For PT managed service user, provide your API key here or update the app/build.gradle
-        //Sdk.getInstance().setApiKey();
-
+        setApiKey(API_KEY);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //DfuServiceInitiator.createDfuNotificationChannel(this);
